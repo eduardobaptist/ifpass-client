@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import api from '@/lib/axios';
 import type { Certificate } from '@/types';
@@ -7,10 +7,15 @@ import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/data-table';
 import { createCertificateColumns } from '@/components/columns/certificate-columns';
 import { ShieldCheck } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { generateCertificatePdf } from '@/lib/certificate-pdf';
+import { toast } from 'sonner';
 
 export default function Certificates() {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [downloadingId, setDownloadingId] = useState<number | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     loadCertificates();
@@ -27,6 +32,29 @@ export default function Certificates() {
       setLoading(false);
     }
   };
+
+  const handleDownload = useCallback(
+    async (certificate: Certificate) => {
+      if (!user) {
+        toast.error('Você precisa estar autenticado para baixar o certificado.');
+        return;
+      }
+
+      try {
+        setDownloadingId(certificate.id);
+        await generateCertificatePdf({
+          certificate,
+          participant: user,
+        });
+      } catch (error) {
+        console.error('Erro ao gerar certificado:', error);
+        toast.error('Não foi possível gerar o certificado. Tente novamente.');
+      } finally {
+        setDownloadingId(null);
+      }
+    },
+    [user],
+  );
 
   if (loading) {
     return (
@@ -53,7 +81,10 @@ export default function Certificates() {
 
       <Card className="p-6">
         <DataTable
-          columns={createCertificateColumns()}
+          columns={createCertificateColumns({
+            onDownload: handleDownload,
+            downloadingId,
+          })}
           data={certificates}
           searchKey="eventName"
           searchPlaceholder="Filtrar por nome do evento..."

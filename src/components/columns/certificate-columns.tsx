@@ -2,7 +2,7 @@ import * as React from 'react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Download } from 'lucide-react';
 import type { Certificate } from '@/types';
 import { toast } from 'sonner';
 
@@ -37,7 +37,15 @@ const CopyTokenButton = ({ token }: { token: string }) => {
   );
 };
 
-export const createCertificateColumns = (): ColumnDef<Certificate>[] => [
+interface CertificateColumnsOptions {
+  onDownload: (certificate: Certificate) => Promise<void> | void;
+  downloadingId?: number | null;
+}
+
+export const createCertificateColumns = ({
+  onDownload,
+  downloadingId,
+}: CertificateColumnsOptions): ColumnDef<Certificate>[] => [
   {
     accessorKey: 'verificationToken',
     header: 'Assinatura',
@@ -122,6 +130,30 @@ export const createCertificateColumns = (): ColumnDef<Certificate>[] => [
         dateStyle: 'short',
         timeStyle: 'short',
       });
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Certificado',
+    cell: ({ row }) => {
+      const certificate = row.original;
+      const isDownloading = downloadingId === certificate.id;
+
+      const handleDownload = async () => {
+        await onDownload(certificate);
+      };
+
+      return (
+        <Button
+          variant="secondary"
+          className="gap-2"
+          onClick={handleDownload}
+          disabled={isDownloading}
+        >
+          <Download className="h-4 w-4" />
+          {isDownloading ? 'Gerando...' : 'Baixar PDF'}
+        </Button>
+      );
     },
   },
 ];
