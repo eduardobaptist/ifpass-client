@@ -43,10 +43,7 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Registrar-se</CardTitle>
-          <CardDescription>
-            Crie sua conta para gerenciar eventos do campus
-          </CardDescription>
+          <CardTitle><img src="ifpass.png" alt="" /></CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -55,7 +52,6 @@ export default function Register() {
               <Input
                 id="fullName"
                 type="text"
-                placeholder="Seu Nome Completo"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -66,7 +62,6 @@ export default function Register() {
               <Input
                 id="email"
                 type="email"
-                placeholder="seu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -77,7 +72,6 @@ export default function Register() {
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -87,7 +81,7 @@ export default function Register() {
             <div className="space-y-2">
               <Label htmlFor="type">Tipo</Label>
               <Select value={type} onValueChange={(value: 'internal' | 'external') => setType(value)}>
-                <SelectTrigger id="type">
+                <SelectTrigger id="type" className="w-full">
                   <SelectValue placeholder="Selecione o tipo" />
                 </SelectTrigger>
                 <SelectContent>

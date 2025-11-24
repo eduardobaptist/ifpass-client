@@ -1,5 +1,5 @@
-import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Sidebar,
   SidebarContent,
@@ -12,10 +12,17 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
-import { Calendar, Users, UserCheck, LogOut, Award, FileBadge } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import {
+  Calendar,
+  Users,
+  UserCheck,
+  LogOut,
+  Award,
+  FileBadge,
+} from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export default function Layout() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -24,36 +31,36 @@ export default function Layout() {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const menuItems = [
     {
-      title: 'Eventos',
+      title: "Eventos",
       icon: Calendar,
-      url: '/eventos',
+      url: "/eventos",
     },
     {
-      title: 'Minhas inscrições',
+      title: "Minhas inscrições",
       icon: UserCheck,
-      url: '/minhas-inscricoes',
+      url: "/minhas-inscricoes",
     },
     {
-      title: 'Certificados',
+      title: "Certificados",
       icon: FileBadge,
-      url: '/certificados',
+      url: "/certificados",
     },
   ];
 
   const adminItems = [
     {
-      title: 'Usuários',
+      title: "Usuários",
       icon: Users,
-      url: '/usuarios',
+      url: "/usuarios",
     },
   ];
 
-  const isAdmin = user?.role === 'admin'
+  const isAdmin = user?.role === "admin";
 
   if (!isAuthenticated) {
     return <Outlet />;
@@ -65,10 +72,8 @@ export default function Layout() {
         <Sidebar>
           <SidebarContent>
             <SidebarGroup>
-              <SidebarGroupLabel className="my-10 -ml-5">
-                <img src="ifpass.png" alt="" />
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
+              <img src="ifpass.png" alt="" />
+              <SidebarGroupContent className="mt-4">
                 <SidebarMenu>
                   {menuItems.map((item) => (
                     <SidebarMenuItem key={item.url}>
@@ -145,4 +150,3 @@ export default function Layout() {
     </SidebarProvider>
   );
 }
-

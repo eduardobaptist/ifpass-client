@@ -51,10 +51,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>IFPass</CardTitle>
-          <CardDescription>
-            Acesse o sistema de gestão de eventos e certificados
-          </CardDescription>
+          <CardTitle><img src="ifpass.png" alt="" /></CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -102,7 +99,7 @@ export default function Login() {
               className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
             >
               <ShieldCheck className="h-4 w-4" />
-              Validar Certificado
+              Validar certificado
             </Link>
           </div>
         </CardContent>
