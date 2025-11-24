@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ShieldCheck } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -50,12 +51,12 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>IFPass</CardTitle>
           <CardDescription>
-            Entre com suas credenciais para acessar o sistema
+            Acesse o sistema de gestão de eventos e certificados
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">E-mail</Label>
@@ -81,10 +82,27 @@ export default function Login() {
               {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
-            Não tem uma conta?{" "}
-            <Link to="/registro" className="text-primary hover:underline">
-              Registrar-se
+          <div className="text-center text-sm space-y-2">
+            <p>
+              Não tem uma conta?{" "}
+              <Link to="/registro" className="text-primary hover:underline">
+                Registrar-se
+              </Link>
+            </p>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">ou</span>
+              </div>
+            </div>
+            <Link
+              to="/validar-certificado"
+              className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+            >
+              <ShieldCheck className="h-4 w-4" />
+              Validar Certificado
             </Link>
           </div>
         </CardContent>

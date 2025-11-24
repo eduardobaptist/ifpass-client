@@ -14,7 +14,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, UserCheck, LogOut } from 'lucide-react';
+import { Calendar, Users, UserCheck, LogOut, Award, FileBadge } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 export default function Layout() {
@@ -38,6 +38,11 @@ export default function Layout() {
       icon: UserCheck,
       url: '/minhas-inscricoes',
     },
+    {
+      title: 'Certificados',
+      icon: FileBadge,
+      url: '/certificados',
+    },
   ];
 
   const adminItems = [
@@ -48,7 +53,7 @@ export default function Layout() {
     },
   ];
 
-  const isAdmin = user?.role === 'admin' || user?.role === 'organizer';
+  const isAdmin = user?.role === 'admin'
 
   if (!isAuthenticated) {
     return <Outlet />;

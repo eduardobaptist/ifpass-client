@@ -1,13 +1,31 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import api from '@/lib/axios';
-import type { Subscription } from '@/types';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { ArrowRight, Calendar, MapPin, Users, X, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "@/lib/axios";
+import type { Subscription } from "@/types";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  ArrowRight,
+  Calendar,
+  MapPin,
+  Users,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  Check,
+  FileCheck,
+} from "lucide-react";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +33,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   getCoreRowModel,
   getPaginationRowModel,
@@ -23,13 +41,14 @@ import {
   useReactTable,
   type ColumnFiltersState,
   type ColumnDef,
-} from '@tanstack/react-table';
+} from "@tanstack/react-table";
 
 export default function MySubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
-  const [subscriptionToCancel, setSubscriptionToCancel] = useState<Subscription | null>(null);
+  const [subscriptionToCancel, setSubscriptionToCancel] =
+    useState<Subscription | null>(null);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const navigate = useNavigate();
 
@@ -40,11 +59,10 @@ export default function MySubscriptions() {
   const loadSubscriptions = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/subscriptions/my-subscriptions');
-      console.log("sub", response.data.subscriptions)
+      const response = await api.get("/subscriptions/my-subscriptions");
       setSubscriptions(response.data.subscriptions);
     } catch (error) {
-      console.error('Erro ao carregar inscrições:', error);
+      console.error("Erro ao carregar inscrições:", error);
     } finally {
       setLoading(false);
     }
@@ -55,14 +73,47 @@ export default function MySubscriptions() {
 
     try {
       await api.post(`/subscriptions/${subscriptionToCancel.id}/cancel`);
-      toast.success('Inscrição cancelada com sucesso!');
+      toast.success("Inscrição cancelada com sucesso!");
       setCancelDialogOpen(false);
       setSubscriptionToCancel(null);
       loadSubscriptions();
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Erro ao cancelar inscrição.';
+      const message =
+        error.response?.data?.message || "Erro ao cancelar inscrição.";
       toast.error(message);
     }
+  };
+
+  const handleCheckIn = async (subscription: Subscription) => {
+    if (!subscription) return;
+
+    try {
+      await api.post(`/subscriptions/attend`, {
+        subscriptionId: subscription.id,
+      });
+      toast.success("Check-in realizado com sucesso!");
+      loadSubscriptions();
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Erro ao fazer check-in na inscrição.";
+      toast.error(message);
+    }
+  };
+
+  const handleCertificate = async (subscription: Subscription) => {
+    if (!subscription) return;
+
+    try {
+      await api.post("/certificates/issue", {
+        subscriptionId: subscription.id,
+      });
+      toast.success("Certificado emitido com sucesso!");
+      loadSubscriptions();
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Erro ao emitir certificado.";
+      toast.error(message);
+    } 
   };
 
   const openCancelDialog = (subscription: Subscription) => {
@@ -71,21 +122,23 @@ export default function MySubscriptions() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('pt-BR', {
-      dateStyle: 'full',
-      timeStyle: 'short',
+    const str: string = new Date(dateString).toLocaleString("pt-BR", {
+      dateStyle: "full",
+      timeStyle: "short",
     });
+
+    return String(str).charAt(0).toUpperCase() + String(str).slice(1);
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'confirmed':
+      case "confirmed":
         return <Badge className="bg-green-500/80 text-white">Confirmada</Badge>;
-      case 'pending':
+      case "pending":
         return <Badge className="bg-yellow-500/80 text-white">Pendente</Badge>;
-      case 'cancelled':
+      case "cancelled":
         return <Badge className="bg-gray-500/80 text-white">Cancelada</Badge>;
-      case 'attended':
+      case "attended":
         return <Badge className="bg-blue-500/80 text-white">Compareceu</Badge>;
       default:
         return <Badge>{status}</Badge>;
@@ -95,8 +148,8 @@ export default function MySubscriptions() {
   // Coluna simples para filtro por nome do evento
   const subscriptionsColumns: ColumnDef<Subscription>[] = [
     {
-      id: 'eventName',
-      accessorFn: (row) => row.event?.name || '',
+      id: "eventName",
+      accessorFn: (row) => row.event?.name || "",
     },
   ];
 
@@ -130,7 +183,9 @@ export default function MySubscriptions() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Minhas inscrições</h1>
-        <p className="text-muted-foreground">Gerencie suas inscrições em eventos</p>
+        <p className="text-muted-foreground">
+          Gerencie suas inscrições em eventos
+        </p>
       </div>
 
       {subscriptions.length === 0 ? (
@@ -138,7 +193,9 @@ export default function MySubscriptions() {
           <CardContent className="pt-6 text-center text-muted-foreground">
             Você ainda não se inscreveu em nenhum evento.
             <Link to="/eventos" className="block mt-4">
-              <Button variant="link">Ver eventos disponíveis <ArrowRight /></Button>
+              <Button variant="link">
+                Ver eventos disponíveis <ArrowRight />
+              </Button>
             </Link>
           </CardContent>
         </Card>
@@ -147,8 +204,16 @@ export default function MySubscriptions() {
           <div className="flex items-center py-4">
             <Input
               placeholder="Filtrar por nome do evento..."
-              value={(subscriptionsTable.getColumn('eventName')?.getFilterValue() as string) ?? ''}
-              onChange={(event) => subscriptionsTable.getColumn('eventName')?.setFilterValue(event.target.value)}
+              value={
+                (subscriptionsTable
+                  .getColumn("eventName")
+                  ?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                subscriptionsTable
+                  .getColumn("eventName")
+                  ?.setFilterValue(event.target.value)
+              }
               className="max-w-sm"
             />
           </div>
@@ -163,54 +228,93 @@ export default function MySubscriptions() {
                 {subscriptionsTable.getRowModel().rows.map((row) => {
                   const subscription = row.original;
                   const event = subscription.event;
-                  const gradientClass = 'from-green-500/5 via-emerald-500/5 to-teal-500/5 border-green-200/50 dark:border-green-800/50';
-                  const iconColor = 'text-green-600 dark:text-green-400';
-                  
+                  const gradientClass =
+                    "from-green-500/5 via-emerald-500/5 to-teal-500/5 border-green-200/50 dark:border-green-800/50";
+                  const iconColor = "text-green-600 dark:text-green-400";
+
                   return (
-                    <Card 
+                    <Card
                       key={subscription.id}
                       className={`relative overflow-hidden border transition-all duration-200 hover:shadow-md hover:scale-[1.01] bg-gradient-to-br ${gradientClass} cursor-pointer`}
-                      onClick={() => navigate(`/eventos/${subscription.eventId}`)}
+                      onClick={() =>
+                        navigate(`/eventos/${subscription.eventId}`)
+                      }
                     >
                       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-400/60 to-emerald-500/60" />
                       <CardHeader className="pb-2 pt-3 px-4">
                         <div className="flex justify-between items-start gap-2">
                           <CardTitle className="text-base font-semibold text-foreground pr-2 line-clamp-1">
-                            {event?.name || 'Evento'}
+                            {event?.name || "Evento"}
                           </CardTitle>
                           <div onClick={(e) => e.stopPropagation()}>
                             {getStatusBadge(subscription.status)}
                           </div>
                         </div>
                         <CardDescription className="text-xs mt-1.5 line-clamp-2">
-                          {event?.description || 'Sem descrição'}
+                          {event?.description || "Sem descrição"}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-1 pt-1 px-4 pb-4">
                         <div className="flex items-start gap-2 text-xs bg-background/30 rounded-md p-1.5">
-                          <Calendar className={`h-3.5 w-3.5 mt-0.5 ${iconColor} flex-shrink-0`} />
+                          <Calendar
+                            className={`h-3.5 w-3.5 mt-0.5 ${iconColor} flex-shrink-0`}
+                          />
                           <span className="text-foreground/90">
-                            {event?.date ? formatDate(event.date) : 'N/A'}
+                            {event?.date ? formatDate(event.date) : "N/A"}
                           </span>
                         </div>
                         <div className="flex items-start gap-2 text-xs bg-background/30 rounded-md p-1.5">
-                          <MapPin className={`h-3.5 w-3.5 mt-0.5 ${iconColor} flex-shrink-0`} />
-                          <span className="text-foreground/90 line-clamp-1">{event?.location || 'N/A'}</span>
+                          <MapPin
+                            className={`h-3.5 w-3.5 mt-0.5 ${iconColor} flex-shrink-0`}
+                          />
+                          <span className="text-foreground/90 line-clamp-1">
+                            {event?.location || "N/A"}
+                          </span>
                         </div>
                         <div className="flex items-start gap-2 text-xs bg-background/30 rounded-md p-1.5">
-                          <Users className={`h-3.5 w-3.5 mt-0.5 ${iconColor} flex-shrink-0`} />
-                          <span className="text-foreground/90">Capacidade: {event?.capacity || 'N/A'}</span>
+                          <Users
+                            className={`h-3.5 w-3.5 mt-0.5 ${iconColor} flex-shrink-0`}
+                          />
+                          <span className="text-foreground/90">
+                            Capacidade: {event?.capacity || "N/A"}
+                          </span>
                         </div>
-                        {subscription.status !== 'cancelled' && subscription.status !== 'attended' && (
-                          <div className="flex gap-1.5 pt-2 border-t border-border/30" onClick={(e) => e.stopPropagation()}>
+                        {subscription.status === "confirmed" && (
+                          <div
+                            className="flex gap-1.5 pt-2 border-t border-border/30"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <Button
                               variant="outline"
-                              size="sm"
-                              className="border-red-300/50 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 h-7 text-xs flex-1"
+                              className="border-blue-300/50 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 text-xs flex-1"
+                              onClick={() => handleCheckIn(subscription)}
+                            >
+                              <Check className="h-3 w-3 mr-1" />
+                              Check-in
+                            </Button>
+                            <Button
+                              variant="outline"
+                              className="border-red-300/50 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs flex-1"
                               onClick={() => openCancelDialog(subscription)}
                             >
                               <X className="h-3 w-3 mr-1" />
                               Cancelar
+                            </Button>
+                          </div>
+                        )}
+
+                        {subscription.status === "attended" && !subscription.hasCertificate && (
+                          <div
+                            className="flex gap-1.5 pt-2 border-t border-border/30"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Button
+                              variant="outline"
+                              className="border-blue-300/50 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 text-xs flex-1"
+                              onClick={() => handleCertificate(subscription)}
+                            >
+                              <FileCheck className="h-3 w-3 mr-1" />
+                              Emitir certificado
                             </Button>
                           </div>
                         )}
@@ -222,7 +326,8 @@ export default function MySubscriptions() {
 
               <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="flex-1 text-sm text-muted-foreground">
-                  {subscriptionsTable.getFilteredRowModel().rows.length} inscrição(ões) encontrada(s).
+                  {subscriptionsTable.getFilteredRowModel().rows.length}{" "}
+                  inscrição(ões) encontrada(s).
                 </div>
                 <div className="flex items-center space-x-2">
                   <Button
@@ -242,7 +347,8 @@ export default function MySubscriptions() {
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
                   <div className="flex items-center justify-center text-sm font-medium">
-                    Página {subscriptionsTable.getState().pagination.pageIndex + 1} de{' '}
+                    Página{" "}
+                    {subscriptionsTable.getState().pagination.pageIndex + 1} de{" "}
                     {subscriptionsTable.getPageCount()}
                   </div>
                   <Button
@@ -256,7 +362,11 @@ export default function MySubscriptions() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => subscriptionsTable.setPageIndex(subscriptionsTable.getPageCount() - 1)}
+                    onClick={() =>
+                      subscriptionsTable.setPageIndex(
+                        subscriptionsTable.getPageCount() - 1
+                      )
+                    }
                     disabled={!subscriptionsTable.getCanNextPage()}
                   >
                     <ChevronsRight className="h-4 w-4" />
@@ -274,11 +384,15 @@ export default function MySubscriptions() {
             <DialogTitle>Cancelar inscrição</DialogTitle>
             <DialogDescription>
               Tem certeza que deseja cancelar sua inscrição no evento "
-              {subscriptionToCancel?.event?.name}"? Esta ação pode não ser reversível.
+              {subscriptionToCancel?.event?.name}"? Esta ação pode não ser
+              reversível.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCancelDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setCancelDialogOpen(false)}
+            >
               Não, manter inscrição
             </Button>
             <Button variant="destructive" onClick={handleCancel}>
@@ -290,4 +404,3 @@ export default function MySubscriptions() {
     </div>
   );
 }
-

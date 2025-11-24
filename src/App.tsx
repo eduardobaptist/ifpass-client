@@ -14,6 +14,8 @@ import Users from '@/pages/Users';
 import CreateUser from '@/pages/users/CreateUser';
 import EditUser from '@/pages/users/EditUser';
 import MySubscriptions from '@/pages/MySubscriptions';
+import Certificates from '@/pages/Certificates';
+import ValidateCertificate from '@/pages/ValidateCertificate';
 import { Toaster } from '@/components/ui/sonner';
 
 function App() {
@@ -24,6 +26,7 @@ function App() {
           {/* Rotas públicas */}
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Register />} />
+          <Route path="/validar-certificado" element={<ValidateCertificate />} />
           <Route path="/nao-encontrado" element={<NotFound />} />
           <Route path="/nao-autorizado" element={<NotAuthorized />} />
 
@@ -57,6 +60,9 @@ function App() {
 
             {/* Minhas Inscrições */}
             <Route path="/minhas-inscricoes" element={<MySubscriptions />} />
+
+            {/* Certificados */}
+            <Route path="/certificados" element={<Certificates />} />
 
             {/* Usuários (apenas admin) */}
             <Route

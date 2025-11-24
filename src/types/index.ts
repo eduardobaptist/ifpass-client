@@ -20,6 +20,7 @@ export interface Event {
   date: string;
   location: string;
   capacity: number;
+  subscriptionsCount?: number;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -32,6 +33,7 @@ export interface Subscription {
   status: 'pending' | 'confirmed' | 'cancelled' | 'attended';
   event?: Event;
   user?: User;
+  hasCertificate: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -70,5 +72,27 @@ export interface UserCreateRequest {
   fullName: string;
   type: 'internal' | 'external';
   role?: 'admin' | 'organizer' | 'user';
+}
+
+// Tipos para certificado
+export interface Certificate {
+  id: number;
+  certificateNumber: string;
+  verificationToken: string;
+  issuedAt: string;
+  verifiedAt: string | null;
+  verificationCount: number;
+  event: {
+    id: number;
+    name: string;
+    type: 'internal' | 'external';
+    date: string;
+    location: string;
+  };
+  subscription: {
+    id: number;
+    status: string;
+    checkedInAt: string | null;
+  };
 }
 

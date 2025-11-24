@@ -26,13 +26,13 @@ api.interceptors.response.use(
 
       switch (status) {
         case 401:
-          // Não autorizado - redireciona para login apenas se não estiver já na página de login/registro
+          // Não autorizado - redireciona para login apenas se não estiver já na página de login/registro/validação
           // O cookie já foi invalidado pelo servidor ou não existe
-          if (currentPath !== '/login' && currentPath !== '/registro') {
+          if (currentPath !== '/login' && currentPath !== '/registro' && currentPath !== '/validar-certificado') {
             window.location.href = '/login';
             toast.error('Sessão expirada. Faça login novamente.');
           }
-          // Se já estiver na página de login/registro, apenas rejeita a promise
+          // Se já estiver na página de login/registro/validação, apenas rejeita a promise
           // Não mostra toast para evitar mensagens desnecessárias na verificação inicial
           break;
 
@@ -40,11 +40,6 @@ api.interceptors.response.use(
           // Proibido - redireciona para página de não autorizado
           window.location.href = '/nao-autorizado';
           toast.error('Você não tem permissão para acessar esta página.');
-          break;
-
-        case 404:
-          // Não encontrado - redireciona para página 404
-          window.location.href = '/nao-encontrado';
           break;
 
         case 500:

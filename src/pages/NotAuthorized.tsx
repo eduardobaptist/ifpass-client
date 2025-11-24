@@ -18,7 +18,7 @@ export default function NotAuthorized() {
           </p>
           <div className="flex gap-2 justify-center">
             <Link to="/eventos">
-              <Button variant="outline">Voltar para Eventos</Button>
+              <Button variant="outline">Voltar para eventos</Button>
             </Link>
           </div>
         </CardContent>

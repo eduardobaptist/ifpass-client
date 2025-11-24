@@ -17,7 +17,7 @@ export default function NotFound() {
             A página que você está procurando não existe ou foi movida.
           </p>
           <Link to="/eventos">
-            <Button>Voltar para Eventos</Button>
+            <Button>Voltar para eventos</Button>
           </Link>
         </CardContent>
       </Card>

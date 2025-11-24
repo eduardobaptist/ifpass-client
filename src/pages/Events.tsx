@@ -77,10 +77,12 @@ export default function Events() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('pt-BR', {
+    const str : string = new Date(dateString).toLocaleString('pt-BR', {
       dateStyle: 'full',
       timeStyle: 'short',
     });
+    
+    return String(str).charAt(0).toUpperCase() + String(str).slice(1);
   };
 
   // Coluna simples para filtro por nome
@@ -121,7 +123,6 @@ export default function Events() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Eventos</h1>
-          <p className="text-muted-foreground">Gerencie os eventos do campus</p>
         </div>
         {isAdmin && (
           <Link to="/eventos/novo">
@@ -135,7 +136,7 @@ export default function Events() {
 
       <Card className="p-6">
         <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as 'table' | 'cards')}>
-          <TabsList className="mb-4">
+          <TabsList>
             <TabsTrigger value="cards">Cards</TabsTrigger>
             <TabsTrigger value="table">Tabela</TabsTrigger>
           </TabsList>
