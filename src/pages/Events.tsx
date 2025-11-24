@@ -77,11 +77,11 @@ export default function Events() {
   };
 
   const formatDate = (dateString: string) => {
-    const str : string = new Date(dateString).toLocaleString('pt-BR', {
+    const str: string = new Date(dateString).toLocaleString('pt-BR', {
       dateStyle: 'full',
       timeStyle: 'short',
     });
-    
+
     return String(str).charAt(0).toUpperCase() + String(str).slice(1);
   };
 
@@ -128,7 +128,7 @@ export default function Events() {
           <Link to="/eventos/novo">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              Novo Evento
+              Novo evento
             </Button>
           </Link>
         )}
@@ -176,13 +176,13 @@ export default function Events() {
                     const event = row.original;
                     const isInternal = event.type === 'internal';
                     const gradientClass = 'from-green-500/5 via-emerald-500/5 to-teal-500/5 border-green-200/50 dark:border-green-800/50';
-                    const badgeClass = isInternal 
-                      ? 'bg-blue-500/80 text-white' 
+                    const badgeClass = isInternal
+                      ? 'bg-blue-500/80 text-white'
                       : 'bg-orange-500/80 text-white';
                     const iconColor = 'text-green-600 dark:text-green-400';
-                    
+
                     return (
-                      <Card 
+                      <Card
                         key={event.id}
                         className={`relative overflow-hidden border transition-all duration-200 hover:shadow-md hover:scale-[1.01] bg-gradient-to-br ${gradientClass} cursor-pointer`}
                         onClick={() => navigate(`/eventos/${event.id}`)}
@@ -193,9 +193,14 @@ export default function Events() {
                             <CardTitle className="text-base font-semibold text-foreground pr-2 line-clamp-1">
                               {event.name}
                             </CardTitle>
-                            <Badge className={`${badgeClass} text-xs shrink-0`}>
-                              {isInternal ? 'Interno' : 'Externo'}
-                            </Badge>
+                            <div className='space-x-1' onClick={(e) => e.stopPropagation()}>
+                              <Badge className={`${badgeClass} text-xs shrink-0`}>
+                                {isInternal ? 'Interno' : 'Externo'}
+                              </Badge>
+                              <Badge variant="outline">
+                                {event.availableSeats} vagas
+                              </Badge>
+                            </div>
                           </div>
                           <CardDescription className="text-xs mt-1.5 line-clamp-2">
                             {event.description}
@@ -215,22 +220,25 @@ export default function Events() {
                             <span className="text-foreground/90">Capacidade: {event.capacity}</span>
                           </div>
                           {isAdmin && (
-                            <div className="flex gap-1.5 pt-2 border-t border-border/30" onClick={(e) => e.stopPropagation()}>
+                            <div
+                              className="flex gap-1.5 pt-2 border-t border-border/30"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <Button
                                 variant="outline"
-                                size="sm"
-                                className="border-green-300/50 text-green-600 hover:bg-green-50 dark:hover:bg-green-950/30 h-7 w-7 p-0"
+                                className="border-blue-300/50 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 text-xs flex-1"
                                 onClick={() => navigate(`/eventos/${event.id}/editar`)}
                               >
-                                <Edit className="h-3 w-3" />
+                                <Edit className="h-3 w-3 mr-1" />
+                                Editar
                               </Button>
                               <Button
                                 variant="outline"
-                                size="sm"
-                                className="border-red-300/50 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 h-7 w-7 p-0"
+                                className="border-red-300/50 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs flex-1"
                                 onClick={() => openDeleteDialog(event)}
                               >
-                                <Trash2 className="h-3 w-3" />
+                                <Trash2 className="h-3 w-3 mr-1" />
+                                Excluir
                               </Button>
                             </div>
                           )}
@@ -311,4 +319,3 @@ export default function Events() {
     </div>
   );
 }
-

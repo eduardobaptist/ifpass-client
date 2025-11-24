@@ -41,7 +41,7 @@ export default function EditUser() {
       email: '',
       password: '',
       type: 'internal',
-      role: 'user',
+      role: 'organizer',
     },
   });
 
@@ -199,7 +199,6 @@ export default function EditUser() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="user">Usuário</SelectItem>
                         <SelectItem value="organizer">Organizador</SelectItem>
                         <SelectItem value="admin">Administrador</SelectItem>
                       </SelectContent>

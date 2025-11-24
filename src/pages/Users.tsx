@@ -88,7 +88,7 @@ export default function Users() {
         </div>
         <Button onClick={() => navigate('/usuarios/novo')}>
           <Plus className="mr-2 h-4 w-4" />
-          Novo Usuário
+          Novo usuário
         </Button>
       </div>
 
