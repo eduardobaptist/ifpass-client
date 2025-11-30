@@ -51,13 +51,12 @@ export default function EditEvent() {
     if (id) {
       loadEvent();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const loadEvent = async () => {
     try {
-      const response = await api.get<Event>(`/events/${id}`);
-      const event = response.data;
+      const response = await api.get(`/events/${id}`);
+      const event = response.data.event;
       
       // Converte a data para o formato datetime-local (remove timezone)
       const dateForInput = event.date.split('.')[0].slice(0, 16);
@@ -107,7 +106,7 @@ export default function EditEvent() {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">Editar Evento</h1>
+          <h1 className="text-3xl font-bold">Editar evento</h1>
           <p className="text-muted-foreground">Atualize as informações do evento</p>
         </div>
       </div>
@@ -224,7 +223,7 @@ export default function EditEvent() {
 
               <div className="flex gap-2 pt-4">
                 <Button type="submit" disabled={form.formState.isSubmitting}>
-                  {form.formState.isSubmitting ? 'Atualizando...' : 'Atualizar Evento'}
+                  {form.formState.isSubmitting ? 'Atualizando...' : 'Atualizar evento'}
                 </Button>
                 <Button
                   type="button"

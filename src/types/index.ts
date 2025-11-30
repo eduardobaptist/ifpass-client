@@ -21,6 +21,7 @@ export interface Event {
   location: string;
   capacity: number;
   subscriptionsCount?: number;
+  availableSeats?: number;
   createdAt?: string;
   updatedAt?: string;
 }

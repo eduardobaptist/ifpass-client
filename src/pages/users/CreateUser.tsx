@@ -38,7 +38,7 @@ export default function CreateUser() {
       email: '',
       password: '',
       type: 'internal',
-      role: 'user',
+      role: 'organizer',
     },
   });
 
@@ -64,7 +64,7 @@ export default function CreateUser() {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">Novo Usuário</h1>
+          <h1 className="text-3xl font-bold">Novo usuário</h1>
           <p className="text-muted-foreground">Preencha os dados do novo usuário</p>
         </div>
       </div>
@@ -154,7 +154,6 @@ export default function CreateUser() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="user">Usuário</SelectItem>
                         <SelectItem value="organizer">Organizador</SelectItem>
                         <SelectItem value="admin">Administrador</SelectItem>
                       </SelectContent>
@@ -166,7 +165,7 @@ export default function CreateUser() {
 
               <div className="flex gap-2 pt-4">
                 <Button type="submit" disabled={form.formState.isSubmitting}>
-                  {form.formState.isSubmitting ? 'Criando...' : 'Criar Usuário'}
+                  {form.formState.isSubmitting ? 'Criando...' : 'Criar usuário'}
                 </Button>
                 <Button
                   type="button"

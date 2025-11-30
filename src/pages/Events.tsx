@@ -128,7 +128,7 @@ export default function Events() {
           <Link to="/eventos/novo">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              Novo evento
+              Novo Evento
             </Button>
           </Link>
         )}

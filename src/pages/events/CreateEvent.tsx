@@ -73,7 +73,7 @@ export default function CreateEvent() {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">Novo Evento</h1>
+          <h1 className="text-3xl font-bold">Novo evento</h1>
           <p className="text-muted-foreground">Preencha os dados do novo evento</p>
         </div>
       </div>
@@ -189,7 +189,7 @@ export default function CreateEvent() {
 
               <div className="flex gap-2 pt-4">
                 <Button type="submit" disabled={form.formState.isSubmitting}>
-                  {form.formState.isSubmitting ? 'Criando...' : 'Criar Evento'}
+                  {form.formState.isSubmitting ? 'Criando...' : 'Criar evento'}
                 </Button>
                 <Button
                   type="button"
