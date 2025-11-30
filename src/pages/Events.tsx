@@ -128,7 +128,7 @@ export default function Events() {
           <Link to="/eventos/novo">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              Novo Evento
+              Novo evento
             </Button>
           </Link>
         )}
@@ -219,18 +219,20 @@ export default function Events() {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="border-green-300/50 text-green-600 hover:bg-green-50 dark:hover:bg-green-950/30 h-7 w-7 p-0"
+                                className="border-blue-300/50 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 text-xs flex-1"
                                 onClick={() => navigate(`/eventos/${event.id}/editar`)}
                               >
-                                <Edit className="h-3 w-3" />
+                                <Edit className="h-3 w-3 mr-1" />
+                                Editar
                               </Button>
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="border-red-300/50 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 h-7 w-7 p-0"
+                                className="border-red-300/50 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs flex-1"
                                 onClick={() => openDeleteDialog(event)}
                               >
-                                <Trash2 className="h-3 w-3" />
+                                <Trash2 className="h-3 w-3 mr-1" />
+                                Excluir
                               </Button>
                             </div>
                           )}

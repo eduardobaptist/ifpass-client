@@ -19,7 +19,6 @@ import {
   Users,
   UserCheck,
   LogOut,
-  Award,
   FileBadge,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";

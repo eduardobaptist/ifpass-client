@@ -51,6 +51,17 @@ export interface RegisterRequest {
   type: 'internal' | 'external';
 }
 
+export interface RegisterInternalRequest {
+  email: string;
+  password: string;
+  fullName: string;
+}
+
+export interface VerifyInternalRequest {
+  email: string;
+  code: string;
+}
+
 export interface AuthResponse {
   user: User;
 }

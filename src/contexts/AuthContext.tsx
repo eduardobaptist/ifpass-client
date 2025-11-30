@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import api from '@/lib/axios';
-import type { User, LoginRequest, RegisterRequest, AuthResponse } from '@/types';
+import type { User, LoginRequest, RegisterRequest, RegisterInternalRequest, VerifyInternalRequest, AuthResponse } from '@/types';
 import { toast } from 'sonner';
 
 interface AuthContextType {
@@ -8,6 +8,8 @@ interface AuthContextType {
   loading: boolean;
   login: (credentials: LoginRequest) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
+  registerInternal: (data: RegisterInternalRequest) => Promise<void>;
+  verifyInternal: (data: VerifyInternalRequest) => Promise<void>;
   logout: () => Promise<void>;
   me: () => Promise<User>;
   isAuthenticated: boolean;
@@ -90,6 +92,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Registro interno (envia código por e-mail)
+  const registerInternal = async (data: RegisterInternalRequest) => {
+    try {
+      await api.post('/auth/register-internal', data);
+      toast.success('Código de verificação enviado para seu e-mail!');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Erro ao enviar código de verificação.';
+      toast.error(message);
+      throw error;
+    }
+  };
+
+  // Verificação interna (valida código e autentica)
+  // A API envia o cookie HTTP-only "auth_token" como resposta no Set-Cookie
+  // O cookie é armazenado automaticamente pelo navegador
+  const verifyInternal = async (data: VerifyInternalRequest) => {
+    try {
+      await api.post('/auth/verify-internal', data);
+      // Após verificação bem-sucedida, busca os dados do usuário
+      await me();
+      toast.success('Verificação realizada com sucesso!');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Erro ao verificar código.';
+      toast.error(message);
+      throw error;
+    }
+  };
+
   // Logout
   // A API remove o cookie no servidor
   const logout = async () => {
@@ -112,6 +142,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading,
         login,
         register,
+        registerInternal,
+        verifyInternal,
         logout,
         me,
         isAuthenticated: !!user,
